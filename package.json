@@ -10,7 +10,8 @@
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext ts --es6",
-    "mock": "cd mock && ts-node-dev mock-server.ts"
+    "mock": "cd mock && ts-node-dev mock-server.ts",
+    "doc": "typedoc"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.6",
@@ -39,6 +40,7 @@
     "sortablejs": "^1.12.0",
     "tinymce": "^5.5.1",
     "tui-editor": "^1.4.10",
+    "typedoc": "^0.19.2",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",
     "vue-count-to": "^1.0.13",

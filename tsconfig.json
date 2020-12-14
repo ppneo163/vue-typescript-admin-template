@@ -28,6 +28,11 @@
       "scripthost"
     ]
   },
+  "typedocOptions": {
+    "inputFiles": ["./src"],
+    "mode": "modules",
+    "out": "docs"
+  },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",

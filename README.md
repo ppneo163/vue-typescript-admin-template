@@ -216,6 +216,23 @@ yarn run test:unit
 yarn run svg
 ```
 
+#### Generate document
+
+```bash
+yarn doc
+```
+执行【yarn doc】，会在项目根目录下生成 docs 文件夹。
+
+自动生成文档功能，是通过集成 [typeDoc](https://typedoc.org/) 来实现. 在本项目中的相关配置涉及以下：
+> package.json: 安装了【typedoc】
+>
+> package.json: 自定义了scripts命令【doc】, 因此执行 yarn doc, 实际执行的是：typedoc， 而typedoc相关的运行参数，见下一条
+>
+> tsconfig.json: 该文件加入了typedoc的配置：typedocOptions， 进一步了解option的配置 [typeDoc options 配置](https://typedoc.org/guides/options/)
+>
+> .eslintignore: 该文件中加入了配置项目【docs/**/*.js】， 防止自动生成的文件无法通过lint检查
+
+
 #### Customize Vue configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).

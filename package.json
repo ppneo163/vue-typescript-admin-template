@@ -1,8 +1,8 @@
 {
-  "name": "vue-typescript-admin-template",
+  "name": "swift-admin",
   "version": "1.0.0",
   "private": true,
-  "author": "Chong Guo <armourcy@gmail.com>",
+  "author": "LiangDong <ppneo007@163.com>",
   "scripts": {
     "serve": "concurrently \"npm:mock\" \"vue-cli-service serve\"",
     "test:unit": "jest --clearCache && vue-cli-service test:unit",
@@ -111,26 +111,12 @@
     "vue-template-compiler": "^2.6.12",
     "webpack": "^4.4.2"
   },
-  "bugs": {
-    "url": "https://github.com/armour/vue-typescript-admin-template/issues"
-  },
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
-  "keywords": [
-    "vue",
-    "typescript",
-    "admin",
-    "template",
-    "element-ui"
-  ],
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
       "vue-cli-service lint"
     ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/armour/vue-typescript-admin-template.git"
   }
 }

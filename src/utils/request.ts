@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Message, MessageBox } from 'element-ui';
 import { UserModule } from '@/store/modules/user';
+import { randomString } from '@/utils/pub-func';
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -15,6 +16,16 @@ service.interceptors.request.use(
     if (UserModule.token) {
       config.headers['X-Access-Token'] = UserModule.token;
     }
+    if (UserModule.id) {
+      config.headers['X-User-Id'] = UserModule.id;
+    }
+    if (UserModule.shopId) {
+      config.headers['X-Shop-Id'] = UserModule.shopId;
+    }
+    config.headers['X-Api-Ver'] = '2.2.0';
+    config.headers['X-Hos-Id'] = '100';
+    config.headers['Request-No'] = 'WEB-SHOP' + new Date().getTime().toString() + randomString(10);
+    config.headers['X-Api-Key'] = 'gc8U4S37ZhhoQZNeZZ0CfcWgIBfkgFEEPIWvpJaBY6DQiWWh9seq/2EckpsvVJ5saoB0PfAMEuWKrf+LGcfHkvMTcHaDc6mr7BpR+PHJF9VmbmNbi365iU9fF4BjSPdbw1lO47LwroTMrxtCDNmOBA==';
     return config;
   },
   (error) => {

@@ -23,6 +23,8 @@ class User extends VuexModule implements IUserState {
   public introduction = ''
   public roles: string[] = []
   public email = ''
+  public id = ''
+  public shopId = ''
 
   @Mutation
   private SET_TOKEN(token: string) {

@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({
   name: 'FilenameOption'
@@ -23,11 +23,11 @@ export default class extends Vue {
   @Prop({ required: true }) private value!: string
 
   get filename() {
-    return this.value
+    return this.value;
   }
 
   set filename(value) {
-    this.$emit('input', value)
+    this.$emit('input', value);
   }
 }
 </script>

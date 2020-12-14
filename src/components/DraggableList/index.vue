@@ -60,9 +60,9 @@
 </template>
 
 <script lang="ts">
-import Draggable from 'vuedraggable'
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import { IArticleData } from '@/api/types'
+import Draggable from 'vuedraggable';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { IArticleData } from '@/api/types';
 
 @Component({
   name: 'DraggableList',
@@ -79,36 +79,36 @@ export default class extends Vue {
   @Prop({ default: '48%' }) private list2width!: string
 
   private isNotInList1(v: IArticleData) {
-    return this.list1.every(k => v.id !== k.id)
+    return this.list1.every(k => v.id !== k.id);
   }
 
   private isNotInList2(v: IArticleData) {
-    return this.list2.every(k => v.id !== k.id)
+    return this.list2.every(k => v.id !== k.id);
   }
 
   private deleteEle(ele: IArticleData) {
     for (const item of this.list1) {
       if (item.id === ele.id) {
-        const index = this.list1.indexOf(item)
-        this.list1.splice(index, 1)
-        break
+        const index = this.list1.indexOf(item);
+        this.list1.splice(index, 1);
+        break;
       }
     }
     if (this.isNotInList2(ele)) {
-      this.list2.unshift(ele)
+      this.list2.unshift(ele);
     }
   }
 
   private pushEle(ele: IArticleData) {
     for (const item of this.list2) {
       if (item.id === ele.id) {
-        const index = this.list2.indexOf(item)
-        this.list2.splice(index, 1)
-        break
+        const index = this.list2.indexOf(item);
+        this.list2.splice(index, 1);
+        break;
       }
     }
     if (this.isNotInList1(ele)) {
-      this.list1.push(ele)
+      this.list1.push(ele);
     }
   }
 }

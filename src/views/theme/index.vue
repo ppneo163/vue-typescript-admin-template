@@ -94,9 +94,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
-import { toggleClass } from '@/utils'
-import '@/assets/custom-theme/index.css' // the theme changed version element-ui css
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import { toggleClass } from '@/utils';
+import '@/assets/custom-theme/index.css'; // the theme changed version element-ui css
 
 @Component({
   name: 'Theme'
@@ -116,7 +116,7 @@ export default class extends Vue {
 
   @Watch('theme')
   private onThemeChange() {
-    toggleClass(document.body, 'custom-theme')
+    toggleClass(document.body, 'custom-theme');
   }
 }
 </script>

@@ -7,10 +7,10 @@
 </template>
 
 <script lang="ts">
-import echarts, { EChartOption } from 'echarts'
-import { Component, Prop } from 'vue-property-decorator'
-import { mixins } from 'vue-class-component'
-import ResizeMixin from './mixins/resize'
+import echarts, { EChartOption } from 'echarts';
+import { Component, Prop } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+import ResizeMixin from './mixins/resize';
 
 @Component({
   name: 'LineChart'
@@ -23,20 +23,20 @@ export default class extends mixins(ResizeMixin) {
 
   mounted() {
     this.$nextTick(() => {
-      this.initChart()
-    })
+      this.initChart();
+    });
   }
 
   beforeDestroy() {
     if (!this.chart) {
-      return
+      return;
     }
-    this.chart.dispose()
-    this.chart = null
+    this.chart.dispose();
+    this.chart = null;
   }
 
   private initChart() {
-    this.chart = echarts.init(document.getElementById(this.id) as HTMLDivElement)
+    this.chart = echarts.init(document.getElementById(this.id) as HTMLDivElement);
     this.chart.setOption({
       backgroundColor: '#394056',
       title: {
@@ -185,7 +185,7 @@ export default class extends mixins(ResizeMixin) {
         },
         data: [220, 182, 125, 145, 122, 191, 134, 150, 120, 110, 165, 122]
       }]
-    } as EChartOption<EChartOption.SeriesLine>)
+    } as EChartOption<EChartOption.SeriesLine>);
   }
 }
 

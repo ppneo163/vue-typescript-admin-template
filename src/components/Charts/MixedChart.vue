@@ -7,10 +7,10 @@
 </template>
 
 <script lang="ts">
-import echarts, { EChartOption } from 'echarts'
-import { Component, Prop } from 'vue-property-decorator'
-import { mixins } from 'vue-class-component'
-import ResizeMixin from './mixins/resize'
+import echarts, { EChartOption } from 'echarts';
+import { Component, Prop } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+import ResizeMixin from './mixins/resize';
 
 @Component({
   name: 'MixedChart'
@@ -23,27 +23,27 @@ export default class extends mixins(ResizeMixin) {
 
   mounted() {
     this.$nextTick(() => {
-      this.initChart()
-    })
+      this.initChart();
+    });
   }
 
   beforeDestroy() {
     if (!this.chart) {
-      return
+      return;
     }
-    this.chart.dispose()
-    this.chart = null
+    this.chart.dispose();
+    this.chart = null;
   }
 
   private initChart() {
-    this.chart = echarts.init(document.getElementById(this.id) as HTMLDivElement)
+    this.chart = echarts.init(document.getElementById(this.id) as HTMLDivElement);
     const xData = (function() {
-      const data = []
+      const data = [];
       for (let i = 1; i < 13; i++) {
-        data.push(i + 'month')
+        data.push(i + 'month');
       }
-      return data
-    }())
+      return data;
+    }());
     this.chart.setOption({
       backgroundColor: '#344b58',
       title: {
@@ -160,7 +160,7 @@ export default class extends mixins(ResizeMixin) {
             },
             position: 'insideTop',
             formatter(p: any) {
-              return p.value > 0 ? p.value : ''
+              return p.value > 0 ? p.value : '';
             }
           }
         },
@@ -191,7 +191,7 @@ export default class extends mixins(ResizeMixin) {
             show: true,
             position: 'top',
             formatter(p: any) {
-              return p.value > 0 ? p.value : ''
+              return p.value > 0 ? p.value : '';
             }
           }
         },
@@ -222,7 +222,7 @@ export default class extends mixins(ResizeMixin) {
             show: true,
             position: 'top',
             formatter(p: any) {
-              return p.value > 0 ? p.value : ''
+              return p.value > 0 ? p.value : '';
             }
           }
         },
@@ -242,7 +242,7 @@ export default class extends mixins(ResizeMixin) {
         ]
       }
       ]
-    } as EChartOption<EChartOption.SeriesLine | EChartOption.SeriesBar>)
+    } as EChartOption<EChartOption.SeriesLine | EChartOption.SeriesBar>);
   }
 }
 </script>

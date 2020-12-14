@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts">
-import echarts, { EChartOption } from 'echarts'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { mixins } from 'vue-class-component'
-import ResizeMixin from '@/components/Charts/mixins/resize'
+import echarts, { EChartOption } from 'echarts';
+import { Component, Prop, Watch } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+import ResizeMixin from '@/components/Charts/mixins/resize';
 
 export interface ILineChartData {
   expectedData: number[]
@@ -27,26 +27,26 @@ export default class extends mixins(ResizeMixin) {
 
   @Watch('chartData', { deep: true })
   private onChartDataChange(value: ILineChartData) {
-    this.setOptions(value)
+    this.setOptions(value);
   }
 
   mounted() {
     this.$nextTick(() => {
-      this.initChart()
-    })
+      this.initChart();
+    });
   }
 
   beforeDestroy() {
     if (!this.chart) {
-      return
+      return;
     }
-    this.chart.dispose()
-    this.chart = null
+    this.chart.dispose();
+    this.chart = null;
   }
 
   private initChart() {
-    this.chart = echarts.init(this.$el as HTMLDivElement, 'macarons')
-    this.setOptions(this.chartData)
+    this.chart = echarts.init(this.$el as HTMLDivElement, 'macarons');
+    this.setOptions(this.chartData);
   }
 
   private setOptions(chartData: ILineChartData) {
@@ -114,7 +114,7 @@ export default class extends mixins(ResizeMixin) {
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]
-      } as EChartOption<EChartOption.SeriesLine>)
+      } as EChartOption<EChartOption.SeriesLine>);
     }
   }
 }

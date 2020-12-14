@@ -1,5 +1,5 @@
-import { RouteConfig } from 'vue-router'
-import Layout from '@/layout/index.vue'
+import { RouteConfig } from 'vue-router';
+import Layout from '@/layout/index.vue';
 
 const componentsRouter: RouteConfig = {
   path: '/components',
@@ -96,6 +96,6 @@ const componentsRouter: RouteConfig = {
       meta: { title: 'draggableSelect' }
     }
   ]
-}
+};
 
-export default componentsRouter
+export default componentsRouter;

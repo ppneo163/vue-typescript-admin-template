@@ -3,11 +3,11 @@
 self.addEventListener('message', (e) => {
   if (e.data) {
     if (e.data === 'skipWaiting') {
-      self.skipWaiting()
+      self.skipWaiting();
     }
   }
-})
+});
 
 /* eslint-disable no-undef */
-workbox.core.clientsClaim()
-workbox.precaching.precacheAndRoute(self.__precacheManifest || [])
+workbox.core.clientsClaim();
+workbox.precaching.precacheAndRoute(self.__precacheManifest || []);

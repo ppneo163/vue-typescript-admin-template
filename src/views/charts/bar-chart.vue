@@ -8,8 +8,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import BarChart from '@/components/Charts/BarChart.vue'
+import { Component, Vue } from 'vue-property-decorator';
+import BarChart from '@/components/Charts/BarChart.vue';
 
 @Component({
   name: 'BarChartDemo',

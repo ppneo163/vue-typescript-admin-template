@@ -6,12 +6,12 @@
 </template>
 
 <script lang="ts">
-import echarts, { EChartOption } from 'echarts'
-import { Component, Prop } from 'vue-property-decorator'
-import { mixins } from 'vue-class-component'
-import ResizeMixin from '@/components/Charts/mixins/resize'
+import echarts, { EChartOption } from 'echarts';
+import { Component, Prop } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+import ResizeMixin from '@/components/Charts/mixins/resize';
 
-const animationDuration = 3000
+const animationDuration = 3000;
 
 @Component({
   name: 'RadarChart'
@@ -23,20 +23,20 @@ export default class extends mixins(ResizeMixin) {
 
   mounted() {
     this.$nextTick(() => {
-      this.initChart()
-    })
+      this.initChart();
+    });
   }
 
   beforeDestroy() {
     if (!this.chart) {
-      return
+      return;
     }
-    this.chart.dispose()
-    this.chart = null
+    this.chart.dispose();
+    this.chart = null;
   }
 
   private initChart() {
-    this.chart = echarts.init(this.$el as HTMLDivElement, 'macarons')
+    this.chart = echarts.init(this.$el as HTMLDivElement, 'macarons');
     this.chart.setOption({
       tooltip: {
         trigger: 'axis',
@@ -98,7 +98,7 @@ export default class extends mixins(ResizeMixin) {
         ],
         animationDuration: animationDuration
       }]
-    } as EChartOption<EChartOption.SeriesRadar>)
+    } as EChartOption<EChartOption.SeriesRadar>);
   }
 }
 </script>

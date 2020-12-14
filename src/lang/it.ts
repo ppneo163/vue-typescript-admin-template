@@ -176,4 +176,4 @@ export default {
   toasts: {
     switchLanguage: 'Cambio lingua effettuato'
   }
-}
+};

@@ -7,10 +7,10 @@
 </template>
 
 <script lang="ts">
-import echarts, { EChartOption } from 'echarts'
-import { Component, Prop } from 'vue-property-decorator'
-import { mixins } from 'vue-class-component'
-import ResizeMixin from './mixins/resize'
+import echarts, { EChartOption } from 'echarts';
+import { Component, Prop } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+import ResizeMixin from './mixins/resize';
 
 @Component({
   name: 'BarChart'
@@ -23,27 +23,27 @@ export default class extends mixins(ResizeMixin) {
 
   mounted() {
     this.$nextTick(() => {
-      this.initChart()
-    })
+      this.initChart();
+    });
   }
 
   beforeDestroy() {
     if (!this.chart) {
-      return
+      return;
     }
-    this.chart.dispose()
-    this.chart = null
+    this.chart.dispose();
+    this.chart = null;
   }
 
   private initChart() {
-    this.chart = echarts.init(document.getElementById(this.id) as HTMLDivElement)
-    const xAxisData: string[] = []
-    const data: number[] = []
-    const data2: number[] = []
+    this.chart = echarts.init(document.getElementById(this.id) as HTMLDivElement);
+    const xAxisData: string[] = [];
+    const data: number[] = [];
+    const data2: number[] = [];
     for (let i = 0; i < 50; i++) {
-      xAxisData.push(i.toString())
-      data.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5)
-      data2.push((Math.sin(i / 5) * (i / 5 + 10) + i / 6) * 3)
+      xAxisData.push(i.toString());
+      data.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
+      data2.push((Math.sin(i / 5) * (i / 5 + 10) + i / 6) * 3);
     }
     this.chart.setOption({
       backgroundColor: '#08263a',
@@ -125,12 +125,12 @@ export default class extends mixins(ResizeMixin) {
       animationEasing: 'elasticOut',
       animationEasingUpdate: 'elasticOut',
       animationDelay(idx: number) {
-        return idx * 20
+        return idx * 20;
       },
       animationDelayUpdate(idx: number) {
-        return idx * 20
+        return idx * 20;
       }
-    } as EChartOption<EChartOption.SeriesBar>)
+    } as EChartOption<EChartOption.SeriesBar>);
   }
 }
 </script>

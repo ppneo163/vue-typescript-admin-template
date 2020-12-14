@@ -38,7 +38,15 @@ module.exports = {
     'vue/eqeqeq': 'error',
     'vue/key-spacing': 'error',
     'vue/match-component-file-name': 'error',
-    'vue/object-curly-spacing': 'error'
+    'vue/object-curly-spacing': 'error',
+    semi: ['error', 'always'],
+    quotes: ['error', 'single'],
+    curly: ['error', 'all'],
+    'default-case': 'error',
+    'dot-location': ['error', 'object'],
+    'dot-notation': ['error', { allowKeywords: true }],
+    eqeqeq: ['error', 'always'],
+    'guard-for-in': 'error'
   },
   overrides: [
     {
@@ -51,4 +59,4 @@ module.exports = {
       }
     }
   ]
-}
+};

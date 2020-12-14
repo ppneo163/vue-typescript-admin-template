@@ -41,8 +41,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { handleClipboard, clipboardSuccess } from '@/utils/clipboard' // use clipboard directly
+import { Component, Vue } from 'vue-property-decorator';
+import { handleClipboard, clipboardSuccess } from '@/utils/clipboard'; // use clipboard directly
 
 @Component({
   name: 'Clipboard'

@@ -27,8 +27,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import DraggableSelect from '@/components/DraggableSelect/index.vue'
+import { Component, Vue } from 'vue-property-decorator';
+import DraggableSelect from '@/components/DraggableSelect/index.vue';
 
 @Component({
   name: 'DraggableSelectDemo',

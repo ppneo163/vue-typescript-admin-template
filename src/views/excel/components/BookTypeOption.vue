@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({
   name: 'BookTypeOption'
@@ -27,11 +27,11 @@ export default class extends Vue {
   private options = ['xlsx', 'csv', 'txt']
 
   get bookType() {
-    return this.value
+    return this.value;
   }
 
   set bookType(value) {
-    this.$emit('input', value)
+    this.$emit('input', value);
   }
 }
 </script>

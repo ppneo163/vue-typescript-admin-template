@@ -75,16 +75,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { AppModule } from '@/store/modules/app'
-import { UserModule } from '@/store/modules/user'
-import Breadcrumb from '@/components/Breadcrumb/index.vue'
-import ErrorLog from '@/components/ErrorLog/index.vue'
-import Hamburger from '@/components/Hamburger/index.vue'
-import HeaderSearch from '@/components/HeaderSearch/index.vue'
-import LangSelect from '@/components/LangSelect/index.vue'
-import Screenfull from '@/components/Screenfull/index.vue'
-import SizeSelect from '@/components/SizeSelect/index.vue'
+import { Component, Vue } from 'vue-property-decorator';
+import { AppModule } from '@/store/modules/app';
+import { UserModule } from '@/store/modules/user';
+import Breadcrumb from '@/components/Breadcrumb/index.vue';
+import ErrorLog from '@/components/ErrorLog/index.vue';
+import Hamburger from '@/components/Hamburger/index.vue';
+import HeaderSearch from '@/components/HeaderSearch/index.vue';
+import LangSelect from '@/components/LangSelect/index.vue';
+import Screenfull from '@/components/Screenfull/index.vue';
+import SizeSelect from '@/components/SizeSelect/index.vue';
 
 @Component({
   name: 'Navbar',
@@ -100,26 +100,26 @@ import SizeSelect from '@/components/SizeSelect/index.vue'
 })
 export default class extends Vue {
   get sidebar() {
-    return AppModule.sidebar
+    return AppModule.sidebar;
   }
 
   get device() {
-    return AppModule.device.toString()
+    return AppModule.device.toString();
   }
 
   get avatar() {
-    return UserModule.avatar
+    return UserModule.avatar;
   }
 
   private toggleSideBar() {
-    AppModule.ToggleSideBar(false)
+    AppModule.ToggleSideBar(false);
   }
 
   private async logout() {
-    await UserModule.LogOut()
+    await UserModule.LogOut();
     this.$router.push(`/login?redirect=${this.$route.fullPath}`).catch(err => {
-      console.warn(err)
-    })
+      console.warn(err);
+    });
   }
 }
 </script>

@@ -45,8 +45,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { Select } from 'element-ui'
+import { Component, Vue } from 'vue-property-decorator';
+import { Select } from 'element-ui';
 
 @Component({
   name: 'DraggableDialogDemo'
@@ -81,7 +81,7 @@ export default class extends Vue {
 
   // v-el-dialog-draggable on-dialog-drag callback function
   private handleDialogDrag() {
-    (this.$refs.select as Select).blur()
+    (this.$refs.select as Select).blur();
   }
 }
 </script>

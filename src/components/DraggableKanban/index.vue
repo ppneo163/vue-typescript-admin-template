@@ -20,8 +20,8 @@
 </template>
 
 <script lang="ts">
-import Draggable from 'vuedraggable'
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import Draggable from 'vuedraggable';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({
   name: 'DraggableKanban',

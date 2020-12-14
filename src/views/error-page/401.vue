@@ -59,8 +59,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import errGif from '@/assets/401-images/401.gif'
+import { Component, Vue } from 'vue-property-decorator';
+import errGif from '@/assets/401-images/401.gif';
 
 @Component({
   name: 'Page401'
@@ -73,10 +73,10 @@ export default class extends Vue {
   private back() {
     if (this.$route.query.noGoBack) {
       this.$router.push({ path: '/dashboard' }).catch(err => {
-        console.warn(err)
-      })
+        console.warn(err);
+      });
     } else {
-      this.$router.go(-1)
+      this.$router.go(-1);
     }
   }
 }

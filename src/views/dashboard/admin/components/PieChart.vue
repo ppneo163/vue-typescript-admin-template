@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts">
-import echarts, { EChartOption } from 'echarts'
-import { Component, Prop } from 'vue-property-decorator'
-import { mixins } from 'vue-class-component'
-import ResizeMixin from '@/components/Charts/mixins/resize'
+import echarts, { EChartOption } from 'echarts';
+import { Component, Prop } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+import ResizeMixin from '@/components/Charts/mixins/resize';
 
 @Component({
   name: 'PieChart'
@@ -21,20 +21,20 @@ export default class extends mixins(ResizeMixin) {
 
   mounted() {
     this.$nextTick(() => {
-      this.initChart()
-    })
+      this.initChart();
+    });
   }
 
   beforeDestroy() {
     if (!this.chart) {
-      return
+      return;
     }
-    this.chart.dispose()
-    this.chart = null
+    this.chart.dispose();
+    this.chart = null;
   }
 
   private initChart() {
-    this.chart = echarts.init(this.$el as HTMLDivElement, 'macarons')
+    this.chart = echarts.init(this.$el as HTMLDivElement, 'macarons');
     this.chart.setOption({
       tooltip: {
         trigger: 'item',
@@ -63,7 +63,7 @@ export default class extends mixins(ResizeMixin) {
           animationDuration: 2600
         }
       ]
-    } as EChartOption<EChartOption.SeriesPie>)
+    } as EChartOption<EChartOption.SeriesPie>);
   }
 }
 </script>

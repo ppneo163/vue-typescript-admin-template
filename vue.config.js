@@ -1,12 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require('path')
+const path = require('path');
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, on Mac: sudo npm run / sudo yarn
-const devServerPort = 9527 // TODO: get this variable from setting.ts
-const mockServerPort = 9528 // TODO: get this variable from setting.ts
-const name = 'Swift Admin' // TODO: get this variable from setting.ts
+const devServerPort = 9527; // TODO: get this variable from setting.ts
+const mockServerPort = 9528; // TODO: get this variable from setting.ts
+const name = 'Swift Admin'; // TODO: get this variable from setting.ts
 
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/vue-typescript-admin-template/' : '/',
@@ -54,9 +54,9 @@ module.exports = {
     // it can be accessed in index.html to inject the correct title.
     // https://cli.vuejs.org/guide/webpack.html#modifying-options-of-a-plugin
     config.plugin('html').tap(args => {
-      args[0].title = name
-      return args
-    })
+      args[0].title = name;
+      return args;
+    });
 
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('preload').tap(() => [
@@ -67,10 +67,10 @@ module.exports = {
         fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
         include: 'initial'
       }
-    ])
+    ]);
 
     // when there are many pages, it will cause too many meaningless requests
-    config.plugins.delete('prefetch')
+    config.plugins.delete('prefetch');
 
     // https://webpack.js.org/configuration/devtool/#development
     // Change development env source map if you want.
@@ -80,11 +80,11 @@ module.exports = {
     //     config => config.devtool('eval-cheap-source-map')
     //   )
 
-    config
-      .when(process.env.NODE_ENV !== 'development',
+    config.
+      when(process.env.NODE_ENV !== 'development',
         config => {
-          config
-            .optimization.splitChunks({
+          config.
+            optimization.splitChunks({
               chunks: 'all',
               cacheGroups: {
                 libs: {
@@ -106,10 +106,10 @@ module.exports = {
                   reuseExistingChunk: true
                 }
               }
-            })
+            });
           // https://webpack.js.org/configuration/optimization/#optimizationruntimechunk
-          config.optimization.runtimeChunk('single')
+          config.optimization.runtimeChunk('single');
         }
-      )
+      );
   }
-}
+};

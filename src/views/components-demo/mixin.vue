@@ -198,11 +198,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import PanThumb from '@/components/PanThumb/index.vue'
-import MaterialInput from '@/components/MaterialInput/index.vue'
-import Mallki from '@/components/TextHoverEffect/Mallki.vue'
-import DropdownMenu from '@/components/DropdownMenu/index.vue'
+import { Component, Vue } from 'vue-property-decorator';
+import PanThumb from '@/components/PanThumb/index.vue';
+import MaterialInput from '@/components/MaterialInput/index.vue';
+import Mallki from '@/components/TextHoverEffect/Mallki.vue';
+import DropdownMenu from '@/components/DropdownMenu/index.vue';
 
 @Component({
   name: 'ComponentMixinDemo',
@@ -216,9 +216,9 @@ import DropdownMenu from '@/components/DropdownMenu/index.vue'
 export default class extends Vue {
   private validateLength = (rule: any, value: string, callback: Function) => {
     if (value.length !== 6) {
-      callback(new Error('请输入六个字符'))
+      callback(new Error('请输入六个字符'));
     } else {
-      callback()
+      callback();
     }
   }
 

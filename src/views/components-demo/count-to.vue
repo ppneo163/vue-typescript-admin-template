@@ -116,8 +116,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import countTo from 'vue-count-to'
+import { Component, Vue } from 'vue-property-decorator';
+import countTo from 'vue-count-to';
 
 @Component({
   name: 'CountToDemo',
@@ -136,58 +136,58 @@ export default class extends Vue {
 
   get startVal() {
     if (this.setStartVal) {
-      return this.setStartVal
+      return this.setStartVal;
     } else {
-      return 0
+      return 0;
     }
   }
 
   get endVal() {
     if (this.setEndVal) {
-      return this.setEndVal
+      return this.setEndVal;
     } else {
-      return 0
+      return 0;
     }
   }
 
   get duration() {
     if (this.setDuration) {
-      return this.setDuration
+      return this.setDuration;
     } else {
-      return 100
+      return 100;
     }
   }
 
   get decimals() {
     if (this.setDecimals) {
       if (this.setDecimals < 0 || this.setDecimals > 20) {
-        alert('digits argument must be between 0 and 20')
-        return 0
+        alert('digits argument must be between 0 and 20');
+        return 0;
       }
-      return this.setDecimals
+      return this.setDecimals;
     } else {
-      return 0
+      return 0;
     }
   }
 
   get separator() {
-    return this.setSeparator
+    return this.setSeparator;
   }
 
   get suffix() {
-    return this.setSuffix
+    return this.setSuffix;
   }
 
   get prefix() {
-    return this.setPrefix
+    return this.setPrefix;
   }
 
   private start() {
-    this.$refs.count && (this.$refs.count as any).start()
+    this.$refs.count && (this.$refs.count as any).start();
   }
 
   private pauseResume() {
-    this.$refs.count && (this.$refs.count as any).pauseResume()
+    this.$refs.count && (this.$refs.count as any).pauseResume();
   }
 }
 </script>

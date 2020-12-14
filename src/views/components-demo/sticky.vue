@@ -130,8 +130,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import Sticky from '@/components/Sticky/index.vue'
+import { Component, Vue } from 'vue-property-decorator';
+import Sticky from '@/components/Sticky/index.vue';
 
 @Component({
   name: 'StickyDemo',
@@ -151,7 +151,7 @@ export default class extends Vue {
 
   private pickerOptions = {
     disabledDate(time: Date) {
-      return time.getTime() > Date.now()
+      return time.getTime() > Date.now();
     }
   }
 }

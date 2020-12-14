@@ -1,5 +1,5 @@
-import { RouteConfig } from 'vue-router'
-import Layout from '@/layout/index.vue'
+import { RouteConfig } from 'vue-router';
+import Layout from '@/layout/index.vue';
 
 const chartsRouter: RouteConfig = {
   path: '/charts',
@@ -39,6 +39,6 @@ const chartsRouter: RouteConfig = {
       }
     }
   ]
-}
+};
 
-export default chartsRouter
+export default chartsRouter;

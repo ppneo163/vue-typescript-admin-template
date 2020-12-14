@@ -8,8 +8,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import LineChart from '@/components/Charts/LineChart.vue'
+import { Component, Vue } from 'vue-property-decorator';
+import LineChart from '@/components/Charts/LineChart.vue';
 
 @Component({
   name: 'LineChartDemo',

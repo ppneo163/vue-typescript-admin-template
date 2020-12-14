@@ -74,17 +74,17 @@
 </template>
 
 <script lang="ts">
-import 'echarts/theme/macarons.js' // Theme used in BarChart, LineChart, PieChart and RadarChart
-import { Component, Vue } from 'vue-property-decorator'
-import GithubCorner from '@/components/GithubCorner/index.vue'
-import BarChart from './components/BarChart.vue'
-import BoxCard from './components/BoxCard.vue'
-import LineChart, { ILineChartData } from './components/LineChart.vue'
-import PanelGroup from './components/PanelGroup.vue'
-import PieChart from './components/PieChart.vue'
-import RadarChart from './components/RadarChart.vue'
-import TodoList from './components/TodoList/index.vue'
-import TransactionTable from './components/TransactionTable.vue'
+import 'echarts/theme/macarons.js'; // Theme used in BarChart, LineChart, PieChart and RadarChart
+import { Component, Vue } from 'vue-property-decorator';
+import GithubCorner from '@/components/GithubCorner/index.vue';
+import BarChart from './components/BarChart.vue';
+import BoxCard from './components/BoxCard.vue';
+import LineChart, { ILineChartData } from './components/LineChart.vue';
+import PanelGroup from './components/PanelGroup.vue';
+import PieChart from './components/PieChart.vue';
+import RadarChart from './components/RadarChart.vue';
+import TodoList from './components/TodoList/index.vue';
+import TransactionTable from './components/TransactionTable.vue';
 
 const lineChartData: { [type: string]: ILineChartData } = {
   newVisitis: {
@@ -103,7 +103,7 @@ const lineChartData: { [type: string]: ILineChartData } = {
     expectedData: [130, 140, 141, 142, 145, 150, 160],
     actualData: [120, 82, 91, 154, 162, 140, 130]
   }
-}
+};
 
 @Component({
   name: 'DashboardAdmin',
@@ -123,7 +123,7 @@ export default class extends Vue {
   private lineChartData = lineChartData.newVisitis
 
   private handleSetLineChartData(type: string) {
-    this.lineChartData = lineChartData[type]
+    this.lineChartData = lineChartData[type];
   }
 }
 </script>

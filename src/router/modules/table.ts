@@ -1,5 +1,5 @@
-import { RouteConfig } from 'vue-router'
-import Layout from '@/layout/index.vue'
+import { RouteConfig } from 'vue-router';
+import Layout from '@/layout/index.vue';
 
 const tableRoutes: RouteConfig = {
   path: '/table',
@@ -36,6 +36,6 @@ const tableRoutes: RouteConfig = {
       meta: { title: 'complexTable' }
     }
   ]
-}
+};
 
-export default tableRoutes
+export default tableRoutes;

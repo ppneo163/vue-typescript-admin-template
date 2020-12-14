@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import { IProfile } from '../index.vue'
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { IProfile } from '../index.vue';
 
 @Component({
   name: 'Account'
@@ -32,7 +32,7 @@ export default class extends Vue {
       message: 'User information has been updated successfully',
       type: 'success',
       duration: 5 * 1000
-    })
+    });
   }
 }
 </script>

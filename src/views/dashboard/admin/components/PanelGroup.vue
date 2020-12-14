@@ -123,8 +123,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import CountTo from 'vue-count-to'
+import { Component, Vue } from 'vue-property-decorator';
+import CountTo from 'vue-count-to';
 
 @Component({
   name: 'PanelGroup',
@@ -134,7 +134,7 @@ import CountTo from 'vue-count-to'
 })
 export default class extends Vue {
   private handleSetLineChartData(type: string) {
-    this.$emit('handle-set-line-chart-data', type)
+    this.$emit('handle-set-line-chart-data', type);
   }
 }
 </script>

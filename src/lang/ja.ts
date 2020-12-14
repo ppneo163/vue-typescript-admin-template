@@ -173,4 +173,4 @@ export default {
     fixedHeader: 'Fixed Header',
     sidebarTextTheme: 'Sidebar Text Theme'
   }
-}
+};

@@ -173,4 +173,4 @@ export default {
     fixedHeader: '헤더 고정',
     sidebarTextTheme: '사이드 메뉴 글꼴 테마'
   }
-}
+};

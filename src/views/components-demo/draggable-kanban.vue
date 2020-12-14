@@ -25,8 +25,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import DraggableKanban from '@/components/DraggableKanban/index.vue'
+import { Component, Vue } from 'vue-property-decorator';
+import DraggableKanban from '@/components/DraggableKanban/index.vue';
 
 @Component({
   name: 'DraggableKanbanDemo',

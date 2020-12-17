@@ -20,7 +20,7 @@ tags:
   - name: users
     description: Users related api.
 paths:
-  /articles:
+  /mock/articles:
     get:
       tags:
         - articles
@@ -120,7 +120,7 @@ paths:
                         $ref: '#/components/schemas/Article'
         401:
           $ref: '#/components/responses/Unauthorized'
-  /articles/{id}:
+  /mock/articles/{id}:
     get:
       tags:
         - articles
@@ -230,7 +230,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
-  /pageviews:
+  /mock/pageviews:
     get:
       tags:
         - articles
@@ -255,7 +255,7 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Pageviews'
-  /transactions:
+  /mock/transactions:
     get:
       tags:
         - transactions
@@ -283,7 +283,7 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Transaction'
-  /roles:
+  /mock/roles:
     get:
       tags:
         - roles
@@ -345,7 +345,7 @@ paths:
                         format: int64
         401:
           $ref: '#/components/responses/Unauthorized'
-  /roles/{id}:
+  /mock/roles/{id}:
     put:
       tags:
         - roles
@@ -419,7 +419,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
-  /routes:
+  /mock/routes:
     get:
       tags:
         - roles
@@ -442,7 +442,7 @@ paths:
                     properties:
                       routes:
                         $ref: '#/components/schemas/Role/properties/routes'
-  /users:
+  /mock/users:
     get:
       tags:
         - users
@@ -477,7 +477,7 @@ paths:
                           $ref: '#/components/schemas/User'
         401:
           $ref: '#/components/responses/Unauthorized'
-  /users/register:
+  /mock/users/register:
     post:
       tags:
         - users
@@ -502,7 +502,7 @@ paths:
                   code:
                     type: integer
                     format: int32
-  /users/login:
+  /mock/users/login:
     post:
       tags:
         - users
@@ -552,7 +552,7 @@ paths:
                         example: admin-token
         400:
           $ref: '#/components/responses/InvalidUser'
-  /users/logout:
+  /mock/users/logout:
     post:
       tags:
         - users
@@ -570,7 +570,7 @@ paths:
                   code:
                     type: integer
                     format: int32
-  /users/{username}:
+  /mock/users/{username}:
     get:
       tags:
         - users
@@ -683,7 +683,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
-  /users/info:
+  /mock/users/info:
     post:
       tags:
         - users

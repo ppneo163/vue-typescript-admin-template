@@ -71,6 +71,15 @@
         {{ $t('login.logIn') }}
       </el-button>
 
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width:100%; margin-bottom:30px;"
+        @click.native.prevent="getList"
+      >
+        获取列表
+      </el-button>
+
       <div style="position:relative">
         <div class="tips">
           <span>{{ $t('login.username') }} : admin </span>
@@ -113,6 +122,7 @@ import { UserModule } from '@/store/modules/user';
 import { isValidUsername } from '@/utils/validate';
 import LangSelect from '@/components/LangSelect/index.vue';
 import SocialSign from './components/SocialSignin.vue';
+import { getShopLit } from '@/api/users';
 
 @Component({
   name: 'Login',
@@ -131,6 +141,7 @@ export default class extends Vue {
   }
 
   private validatePassword = (rule: any, value: string, callback: Function) => {
+    console.log(process.env);
     if (value.length < 6) {
       callback(new Error('The password can not be less than 6 digits'));
     } else {
@@ -218,6 +229,11 @@ export default class extends Vue {
       }
       return acc;
     }, {} as Dictionary<string>);
+  }
+
+  private async getList() {
+    const { data } = await getShopLit('18089210556');
+    console.log(data);
   }
 }
 </script>

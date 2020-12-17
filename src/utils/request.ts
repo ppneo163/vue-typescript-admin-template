@@ -37,7 +37,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     // Some example codes here:
-    // code == 20000: success
+    // code == 0: success
     // code == 50001: invalid access token
     // code == 50002: already login in other place
     // code == 50003: access token expired
@@ -45,9 +45,9 @@ service.interceptors.response.use(
     // code == 50005: username or password is incorrect
     // You can change this part for your own usage.
     const res = response.data;
-    if (res.code !== 20000) {
+    if (res.code !== 0) {
       Message({
-        message: res.message || 'Error',
+        message: (res.message || 'Error') + ' code:' + res.code,
         type: 'error',
         duration: 5 * 1000
       });

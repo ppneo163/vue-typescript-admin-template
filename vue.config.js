@@ -7,6 +7,12 @@ const path = require('path');
 const devServerPort = 9527; // TODO: get this variable from setting.ts
 const mockServerPort = 9528; // TODO: get this variable from setting.ts
 const name = 'Swift Admin'; // TODO: get this variable from setting.ts
+const server = {
+  DEV: process.env.VUE_APP_SERVER_DEV,
+  TEST: process.env.VUE_APP_SERVER_TEST,
+  PRO: process.env.VUE_APP_SERVER_PRO,
+  BUILD: process.env.VUE_APP_SERVER
+};
 
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/vue-typescript-admin-template/' : '/',
@@ -20,13 +26,33 @@ module.exports = {
       errors: true
     },
     progress: false,
+    // 本文件修改，重启后才能生效
+    // proxy: 这里的vue代理是 vue静态服务器做代理。使用的是 http-proxy-middleware 这个模块（这个模块相当于是node.js的一个插件）
+    // devServer：前端开发服务器，即本机
+    // proxy的作用：这将告诉 devServer 将任何未知请求（与静态文件不匹配的请求）代理到 target 指向的地址(Api服务器)
+    // target地址，即API服务器，既可以是本机localhost(常见的如mock数据时，如本项目)， 也可以是另外一个远程服务器（mock数据的专用服务器、测试环境联调的服务器、 生产环境的服务器）
+    // 本项目target是本机 http://127.0.0.1，配置为：server的url=/mock-api/v1 server的port=9528，因此服务器上的Api地址形式为 http://127.0.0.1:9528/mock-api/v1
+    // 相关知识: https://cli.vuejs.org/config/#devserver-proxy
+    // 相关知识: https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/mock-api.html#%E6%96%B0%E6%96%B9%E6%A1%88
+    // 相关知识: https://rgb-24bit.github.io/blog/2018/glob.html （代理地址匹配规则）
+    // pathRewrite： 使用proxy进行代理时，对请求地址进行重定向，以匹配到正确的请求地址（要根据前后端的地址实际情况来做配置）
     proxy: {
-      // change xxx-api/login => /mock-api/v1/login
-      // detail: https://cli.vuejs.org/config/#devserver-proxy
-      [process.env.VUE_APP_BASE_API]: {
+      /* 本框架，模拟数据接口的路径，规定都是以/mock开头，然后代理到本地的mock-serve服务器 */
+      '/mock': {
         target: `http://127.0.0.1:${mockServerPort}/mock-api/v1`,
         changeOrigin: true, // needed for virtual hosted sites
         ws: true, // proxy websockets
+        logLevel: 'debug', // 设置为debug可在Terminal看见代理的真实请求地址
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      },
+      /* 本框架，真实数据接口的路径，确保不要包含mock字符串，才能保证被正确的代理到指定的服务器 */
+      '[!mock]': {
+        target: process.env.NODE_ENV === 'production' ? server.BUILD : server[process.env.VUE_APP_ENV],
+        changeOrigin: true,
+        ws: true,
+        logLevel: 'debug',
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }

@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export const getTransactions = (params: any) =>
   request({
-    url: '/transactions',
+    url: '/mock/transactions',
     method: 'get',
     params
   });

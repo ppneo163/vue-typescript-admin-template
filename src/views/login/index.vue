@@ -9,9 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">
-          {{ $t('login.title') }}
-        </h3>
+        <h3 class="title">系统登录</h3>
         <lang-select class="set-language" />
       </div>
 
@@ -22,7 +20,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          :placeholder="$t('login.username')"
+          placeholder="账号"
           name="username"
           type="text"
           tabindex="1"
@@ -32,7 +30,7 @@
 
       <el-tooltip
         v-model="capsTooltip"
-        content="Caps lock is On"
+        content="大写已打开"
         placement="right"
         manual
       >
@@ -45,7 +43,7 @@
             ref="password"
             v-model="loginForm.password"
             :type="passwordType"
-            :placeholder="$t('login.password')"
+            placeholder="密码"
             name="password"
             tabindex="2"
             autocomplete="on"
@@ -62,54 +60,41 @@
         </el-form-item>
       </el-tooltip>
 
+      <el-form-item prop="shopId">
+        <span class="svg-container">
+          <i class="el-icon-s-shop fs-18"></i>
+        </span>
+        <el-select
+          ref="shopId"
+          name="shopId"
+          tabindex="3"
+          v-model="loginForm.shopId"
+          placeholder="请选择登录商铺"
+          clearable
+          class="width-90"
+        >
+          <el-option
+            v-for="item in shopList"
+            :key="item.id"
+            :label="item.shopName"
+            :value="item.id">
+            <span class="float-left">{{ item.shopName }}</span>
+            <span class="float-right text-grey-dark fs-12">{{ item.id }}</span>
+          </el-option>
+        </el-select>
+      </el-form-item>
+
       <el-button
         :loading="loading"
         type="primary"
-        style="width:100%; margin-bottom:30px;"
+        class="width-100 my-lg"
         @click.native.prevent="handleLogin"
       >
-        {{ $t('login.logIn') }}
+        登录
       </el-button>
 
-      <el-button
-        :loading="loading"
-        type="primary"
-        style="width:100%; margin-bottom:30px;"
-        @click.native.prevent="getList"
-      >
-        获取列表
-      </el-button>
-
-      <div style="position:relative">
-        <div class="tips">
-          <span>{{ $t('login.username') }} : admin </span>
-          <span>{{ $t('login.password') }} : {{ $t('login.any') }} </span>
-        </div>
-        <div class="tips">
-          <span>{{ $t('login.username') }} : editor </span>
-          <span>{{ $t('login.password') }} : {{ $t('login.any') }} </span>
-        </div>
-
-        <el-button
-          class="thirdparty-button"
-          type="primary"
-          @click="showDialog=true"
-        >
-          {{ $t('login.thirdparty') }}
-        </el-button>
-      </div>
     </el-form>
 
-    <el-dialog
-      :title="$t('login.thirdparty')"
-      :visible.sync="showDialog"
-    >
-      {{ $t('login.thirdpartyTips') }}
-      <br>
-      <br>
-      <br>
-      <social-sign />
-    </el-dialog>
   </div>
 </template>
 
@@ -119,7 +104,7 @@ import { Route } from 'vue-router';
 import { Dictionary } from 'vue-router/types/router';
 import { Form as ElForm, Input } from 'element-ui';
 import { UserModule } from '@/store/modules/user';
-import { isValidUsername } from '@/utils/validate';
+import { isValidPhone } from '@/utils/validate';
 import LangSelect from '@/components/LangSelect/index.vue';
 import SocialSign from './components/SocialSignin.vue';
 import { getShopLit } from '@/api/users';
@@ -133,38 +118,40 @@ import { getShopLit } from '@/api/users';
 })
 export default class extends Vue {
   private validateUsername = (rule: any, value: string, callback: Function) => {
-    if (!isValidUsername(value)) {
-      callback(new Error('Please enter the correct user name'));
+    if (!isValidPhone(value)) {
+      callback(new Error('请输入账号（手机号码）'));
     } else {
       callback();
+      this.getShopLit();
     }
   }
 
   private validatePassword = (rule: any, value: string, callback: Function) => {
-    console.log(process.env);
     if (value.length < 6) {
-      callback(new Error('The password can not be less than 6 digits'));
+      callback(new Error('请输入密码（至少6位）'));
     } else {
       callback();
     }
   }
 
   private loginForm = {
-    username: 'admin',
-    password: '111111'
+    username: '',
+    password: '',
+    shopId: null
   }
 
   private loginRules = {
-    username: [{ validator: this.validateUsername, trigger: 'blur' }],
-    password: [{ validator: this.validatePassword, trigger: 'blur' }]
+    username: [{ required: true, validator: this.validateUsername, trigger: 'change' }],
+    password: [{ required: true, validator: this.validatePassword, trigger: 'change' }],
+    shopId: [{ required: true, message: '请选择商铺', trigger: 'change' }]
   }
 
   private passwordType = 'password'
   private loading = false
-  private showDialog = false
   private capsTooltip = false
   private redirect?: string
   private otherQuery: Dictionary<string> = {}
+  private shopList = [];
 
   @Watch('$route', { immediate: true })
   private onRouteChange(route: Route) {
@@ -178,16 +165,16 @@ export default class extends Vue {
   }
 
   mounted() {
-    if (this.loginForm.username === '') {
+    if (!this.loginForm.username) {
       (this.$refs.username as Input).focus();
-    } else if (this.loginForm.password === '') {
+    } else if (!this.loginForm.password) {
       (this.$refs.password as Input).focus();
     }
   }
 
   private checkCapslock(e: KeyboardEvent) {
     const { key } = e;
-    this.capsTooltip = key !== null && key.length === 1 && (key >= 'A' && key <= 'Z');
+    this.capsTooltip = !!key && key.length === 1 && (key >= 'A' && key <= 'Z');
   }
 
   private showPwd() {
@@ -206,16 +193,13 @@ export default class extends Vue {
       if (valid) {
         this.loading = true;
         await UserModule.Login(this.loginForm);
+        this.loading = false;
         this.$router.push({
           path: this.redirect || '/',
           query: this.otherQuery
         }).catch(err => {
           console.warn(err);
         });
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.loading = false;
-        }, 0.5 * 1000);
       } else {
         return false;
       }
@@ -231,9 +215,9 @@ export default class extends Vue {
     }, {} as Dictionary<string>);
   }
 
-  private async getList() {
-    const { data } = await getShopLit('18089210556');
-    console.log(data);
+  private async getShopLit() {
+    const { data } = await getShopLit(this.loginForm.username);
+    this.shopList = data || [];
   }
 }
 </script>

@@ -1,30 +1,38 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
-import { login, logout, getUserInfo } from '@/api/users';
-import { getToken, setToken, removeToken } from '@/utils/cookies';
+import { login, logout } from '@/api/users';
 import router, { resetRouter } from '@/router';
 import { PermissionModule } from './permission';
 import { TagsViewModule } from './tags-view';
 import store from '@/store';
+import { getToken, getUser, removeToken, removeUser, setToken, setUser } from '@/utils/local-storage';
+import { Message } from 'element-ui';
 
 export interface IUserState {
   token: string
+  user: any
+  roles: string[]
   name: string
   avatar: string
   introduction: string
-  roles: string[]
   email: string
 }
 
 @Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
   public token = getToken() || ''
+  public user = getUser() || null
+  public roles: any[] = []
+  public ossPath = ''
   public name = ''
   public avatar = ''
   public introduction = ''
-  public roles: string[] = []
   public email = ''
   public id = ''
   public shopId = ''
+  public idCard = ''
+  public phone = ''
+  public userSex = ''
+  public userState = ''
 
   @Mutation
   private SET_TOKEN(token: string) {
@@ -32,37 +40,45 @@ class User extends VuexModule implements IUserState {
   }
 
   @Mutation
-  private SET_NAME(name: string) {
-    this.name = name;
+  private SET_USER(user: any) {
+    this.user = user;
+    this.ossPath = user.ossPath + '/';
+    this.shopId = user.shopId;
+    const userVo = user.userVO;
+    if (userVo) {
+      this.name = userVo.userName;
+      this.avatar = this.ossPath + userVo.userAvatar;
+      this.introduction = userVo.introduction;
+      this.email = userVo.userEmail;
+      this.id = userVo.id;
+      this.idCard = userVo.idCard;
+      this.phone = userVo.phone;
+      this.userSex = userVo.userSex === '0' ? '男' : '女';
+      this.userState = userVo.userState === '0' ? '停用' : '启用';
+    } else {
+      Message.error('用户信息缺失');
+      throw Error('用户信息缺失');
+    }
+    if (this.userState === '停用') {
+      Message.error('用户已停用');
+      throw Error('用户已停用');
+    }
   }
 
   @Mutation
-  private SET_AVATAR(avatar: string) {
-    this.avatar = avatar;
-  }
-
-  @Mutation
-  private SET_INTRODUCTION(introduction: string) {
-    this.introduction = introduction;
-  }
-
-  @Mutation
-  private SET_ROLES(roles: string[]) {
+  private SET_ROLES(roles: any[]) {
     this.roles = roles;
   }
 
-  @Mutation
-  private SET_EMAIL(email: string) {
-    this.email = email;
-  }
-
   @Action
-  public async Login(userInfo: { username: string, password: string}) {
-    let { username, password } = userInfo;
+  public async Login(userInfo: { username: string, password: string, shopId: any}) {
+    let { username, password, shopId } = userInfo;
     username = username.trim();
-    const { data } = await login({ username, password });
-    setToken(data.accessToken);
-    this.SET_TOKEN(data.accessToken);
+    const { data } = await login({ phone: username, password, shopId });
+    setToken(data.authToken.accessToken);
+    setUser(data);
+    this.SET_TOKEN(data.authToken.accessToken);
+    this.SET_USER(data);
   }
 
   @Action
@@ -73,24 +89,25 @@ class User extends VuexModule implements IUserState {
   }
 
   @Action
-  public async GetUserInfo() {
-    if (this.token === '') {
-      throw Error('GetUserInfo: token is undefined!');
+  public async GetUserRoles() {
+    if (!this.token) {
+      Message.error('用户token不存在');
+      throw Error('用户token不存在');
     }
-    const { data } = await getUserInfo({ /* Your params here */ });
-    if (!data) {
-      throw Error('Verification failed, please Login again.');
+    if (!this.user) {
+      Message.error('用户校验失败');
+      throw Error('用户校验失败');
     }
-    const { roles, name, avatar, introduction, email } = data.user;
-    // roles must be a non-empty array
-    if (!roles || roles.length <= 0) {
-      throw Error('GetUserInfo: roles must be a non-null array!');
+    let roles: any[] = [];
+    if (this.user.userVO) {
+      roles = this.user.userVO.roleIdList || [];
     }
-    this.SET_ROLES(roles);
-    this.SET_NAME(name);
-    this.SET_AVATAR(avatar);
-    this.SET_INTRODUCTION(introduction);
-    this.SET_EMAIL(email);
+    if (roles.length !== 0) {
+      this.SET_ROLES(roles.concat(['admin']));
+    } else {
+      Message.error('用户无任何权限');
+      throw Error('用户无任何权限');
+    }
   }
 
   @Action
@@ -99,7 +116,7 @@ class User extends VuexModule implements IUserState {
     const token = role + '-token';
     this.SET_TOKEN(token);
     setToken(token);
-    await this.GetUserInfo();
+    await this.GetUserRoles();
     resetRouter();
     // Generate dynamic accessible routes based on roles
     PermissionModule.GenerateRoutes(this.roles);
@@ -116,6 +133,7 @@ class User extends VuexModule implements IUserState {
     }
     await logout();
     removeToken();
+    removeUser();
     resetRouter();
 
     // Reset visited views and cached views

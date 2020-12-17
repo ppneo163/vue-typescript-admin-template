@@ -35,7 +35,7 @@ export const deleteUser = (username: string) =>
 
 export const login = (data: any) =>
   request({
-    url: '/mock/users/login',
+    url: 'shopping/v1/merchant/user/unauth/login',
     method: 'post',
     data
   });
@@ -53,6 +53,10 @@ export const register = (data: any) =>
     data
   });
 
+/**
+ * 获取登录店铺列表
+ * @param phone
+ */
 export const getShopLit = (phone: any) =>
   request({
     url: `shopping/v1/merchant/user/shop/${phone}`,

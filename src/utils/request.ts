@@ -16,10 +16,8 @@ service.interceptors.request.use(
     if (UserModule.token) {
       config.headers['X-Access-Token'] = UserModule.token;
     }
-    if (UserModule.id) {
+    if (UserModule.user) {
       config.headers['X-User-Id'] = UserModule.id;
-    }
-    if (UserModule.shopId) {
       config.headers['X-Shop-Id'] = UserModule.shopId;
     }
     config.headers['X-Api-Ver'] = '2.2.0';
@@ -37,7 +35,8 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     // Some example codes here:
-    // code == 0: success
+    // code == 0: rest success
+    // code == 20000: mock success
     // code == 50001: invalid access token
     // code == 50002: already login in other place
     // code == 50003: access token expired
@@ -45,9 +44,10 @@ service.interceptors.response.use(
     // code == 50005: username or password is incorrect
     // You can change this part for your own usage.
     const res = response.data;
-    if (res.code !== 0) {
+    console.log(res);
+    if (res.code !== 0 && res.code !== 20000) {
       Message({
-        message: (res.message || 'Error') + ' code:' + res.code,
+        message: (res.message || 'Error') + ' 【错误码：' + res.code + '】',
         type: 'error',
         duration: 5 * 1000
       });

@@ -1,7 +1,11 @@
 import axios from 'axios';
-import { Message, MessageBox } from 'element-ui';
+import { Message, MessageBox, Loading } from 'element-ui';
 import { UserModule } from '@/store/modules/user';
 import { randomString } from '@/utils/pub-func';
+import { ElLoadingComponent } from 'element-ui/types/loading';
+
+// 全局loading遮罩层
+let loading : ElLoadingComponent;
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -9,17 +13,22 @@ const service = axios.create({
   // withCredentials: true // send cookies when cross-domain requests
 });
 
-// Request interceptors
+// 请求拦截器
 service.interceptors.request.use(
   (config) => {
+    // 请求loading
+    loading = Loading.service({
+      lock: true,
+      text: '拼命加载中...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.7)',
+      customClass: 'full-screen-loading'
+    });
+
     // Add X-Access-Token header to every request, you can add other custom headers here
-    if (UserModule.token) {
-      config.headers['X-Access-Token'] = UserModule.token;
-    }
-    if (UserModule.user) {
-      config.headers['X-User-Id'] = UserModule.id;
-      config.headers['X-Shop-Id'] = UserModule.shopId;
-    }
+    config.headers['X-Access-Token'] = UserModule.token;
+    config.headers['X-User-Id'] = UserModule.id;
+    config.headers['X-Shop-Id'] = UserModule.shopId;
     config.headers['X-Api-Ver'] = '2.2.0';
     config.headers['X-Hos-Id'] = '100';
     config.headers['Request-No'] = 'WEB-SHOP' + new Date().getTime().toString() + randomString(10);
@@ -27,13 +36,18 @@ service.interceptors.request.use(
     return config;
   },
   (error) => {
+    // 异常时 关闭 loading
+    loading.close();
     Promise.reject(error);
   }
 );
 
-// Response interceptors
+// 响应拦截器
 service.interceptors.response.use(
   (response) => {
+    // 响应 关闭 loading
+    loading.close();
+
     // Some example codes here:
     // code == 0: rest success
     // code == 20000: mock success

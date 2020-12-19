@@ -41,7 +41,7 @@ module.exports = {
     'dot-location': ['error', 'object'],
     'dot-notation': ['error', { allowKeywords: true }],
     'guard-for-in': 'error',
-    camelcase: 'error',
+    camelcase: 'off',
     semi: ['error', 'always'],
     quotes: ['error', 'single'],
     curly: ['error', 'all'],

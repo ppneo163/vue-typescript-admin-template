@@ -156,6 +156,17 @@ aside {
   padding: 0px !important;
 }
 
+.full-screen-loading {
+  .el-icon-loading {
+    font-size: 40px;
+    color: white;
+  }
+  .el-loading-text {
+    font-size: 18px;
+    color: white;
+  }
+}
+
 .fs-12 {
   font-size: 12px;
 }

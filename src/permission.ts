@@ -24,6 +24,7 @@ const getPageTitle = (key: string) => {
 router.beforeEach(async(to: Route, _: Route, next: any) => {
   // Start progress bar
   NProgress.start();
+  console.log('UserModule.token', UserModule.token);
 
   // Determine whether the user has logged in
   if (UserModule.token) {
@@ -36,9 +37,8 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
       if (UserModule.roles.length === 0) {
         try {
           // Note: roles must be a object array! such as: ['admin'] or ['developer', 'editor']
-          await UserModule.GetUserRoles();
+          await UserModule.GetUserInfo();
           const roles = UserModule.roles;
-          console.log(roles);
           // Generate accessible routes map based on role
           PermissionModule.GenerateRoutes(roles);
           // Dynamically add accessible routes
@@ -48,7 +48,7 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
           next({ ...to, replace: true });
         } catch (err) {
           // Remove token and redirect to login page
-          UserModule.ResetToken();
+          UserModule.ClearUser();
           Message.error(err || 'Has Error');
           next(`/login?redirect=${to.path}`);
           NProgress.done();

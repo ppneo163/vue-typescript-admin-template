@@ -38,22 +38,7 @@ export const localStorage_remove = (key: string) => {
   localStorage.removeItem(key);
 };
 
-const tokenKey = 'accessToken';
-export const getToken = () => localStorage.getItem(tokenKey);
-export const setToken = (token: string) => localStorage.setItem(tokenKey, token);
-export const removeToken = () => localStorage.removeItem(tokenKey);
-
-export const localStorage_get_token = () => localStorage_get(tokenKey);
-export const localStorage_set_token = (token: string) => localStorage_set(tokenKey, token);
-export const localStorage_del_token = () => localStorage_remove(tokenKey);
-
-const userKey = 'user';
-export const getUser = () => {
-  try {
-    return JSON.parse(localStorage.getItem(userKey) || '');
-  } catch {
-    return null;
-  }
-};
-export const setUser = (user: any) => localStorage.setItem(userKey, JSON.stringify(user));
-export const removeUser = () => localStorage.removeItem(userKey);
+const user = 'user';
+export const localStorage_get_user = () => localStorage_get(user);
+export const localStorage_set_user = (data: string) => localStorage_set(user, data);
+export const localStorage_del_user = () => localStorage_remove(user);

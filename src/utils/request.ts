@@ -25,7 +25,7 @@ service.interceptors.request.use(
       customClass: 'full-screen-loading'
     });
 
-    // Add X-Access-Token header to every request, you can add other custom headers here
+    // 加入自定义的请求头
     config.headers['X-Access-Token'] = UserModule.token;
     config.headers['X-User-Id'] = UserModule.id;
     config.headers['X-Shop-Id'] = UserModule.shopId;
@@ -58,7 +58,6 @@ service.interceptors.response.use(
     // code == 50005: username or password is incorrect
     // You can change this part for your own usage.
     const res = response.data;
-    console.log(res);
     if (res.code !== 0 && res.code !== 20000) {
       Message({
         message: (res.message || 'Error') + ' 【错误码：' + res.code + '】',
@@ -75,7 +74,7 @@ service.interceptors.response.use(
             type: 'warning'
           }
         ).then(() => {
-          UserModule.ResetToken();
+          UserModule.ClearUser();
           location.reload(); // To prevent bugs from vue-router
         });
       }

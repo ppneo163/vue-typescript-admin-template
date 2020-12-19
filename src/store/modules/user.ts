@@ -1,16 +1,10 @@
-import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
+import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 import { login, logout } from '@/api/users';
 import router, { resetRouter } from '@/router';
 import { PermissionModule } from './permission';
 import { TagsViewModule } from './tags-view';
 import store from '@/store';
-import {
-  localStorage_del_token,
-  localStorage_get,
-  localStorage_get_token, localStorage_set_token,
-  removeUser,
-  setUser
-} from '@/utils/local-storage';
+import { localStorage_del_user, localStorage_get_user, localStorage_set_user } from '@/utils/local-storage';
 import { Message } from 'element-ui';
 
 /**
@@ -21,6 +15,8 @@ import { Message } from 'element-ui';
  */
 export interface IUserState {
   token: string // rest请求的 accessToken
+  imToken: string // imToken
+  refreshToken: string // refreshToken
   roles: any[] // 角色数组
   name: string // 姓名
   avatar: string // 头像
@@ -34,13 +30,19 @@ export interface IUserState {
   [key: string]: any
 }
 
+const local_user = localStorage_get_user();
+
+/**
+ * store内的变量在刷新的时候会重新初始化（内存变量）
+ * 而每次路由跳转会判断内存变量token是否存在（详见permission.ts），若不存在则会通过 GetUserInfo 获取一次
+ * GetUserInfo 会从 localStorage 中获取，若未获取到，则退出到登录界面
+ */
 @Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
-  private static tokenKey = 'accessToken';
-  private static userKey = 'user';
-
   // 用户通用字段
-  public token = localStorage_get_token()
+  public token = local_user ? local_user.accessToken : ''
+  public imToken = local_user ? local_user.imToken : ''
+  public refreshToken = local_user ? local_user.refreshToken : ''
   public roles: any[] = []
   public name = ''
   public avatar = ''
@@ -51,89 +53,50 @@ class User extends VuexModule implements IUserState {
   public email = ''
   public userState = ''
   public ossPath = ''
-
   // 业务系统字段
   public shopId: number | null = null // 当前登录的商铺
-  // public user = getUser() || null
-  public user = localStorage_get(User.userKey)
-
-  @Mutation
-  private set_token(token: string) {
-    this.token = token;
-  }
-
-  @Mutation
-  private set_ossPath(ossPath: string) {
-    this.ossPath = ossPath;
-  }
-
-  @Mutation
-  private set_user(user: any) {
-    this.user = user;
-    this.ossPath = user.ossPath + '/';
-    this.shopId = user.shopId;
-    const userVo = user.userVO;
-    if (userVo) {
-      this.name = userVo.userName;
-      this.avatar = this.ossPath + userVo.userAvatar;
-      this.email = userVo.userEmail;
-      this.id = userVo.id;
-      this.idCard = userVo.idCard;
-      this.phone = userVo.phone;
-      this.sex = userVo.userSex === '0' ? '男' : '女';
-      this.userState = userVo.userState === '0' ? '停用' : '启用';
-    } else {
-      Message.error('用户信息缺失');
-      throw Error('用户信息缺失');
-    }
-    if (this.userState === '停用') {
-      Message.error('用户已停用');
-      throw Error('用户已停用');
-    }
-  }
-
-  @Mutation
-  private set_roles(roles: any[]) {
-    this.roles = roles;
-  }
 
   @Action
-  public async Login(userInfo: { username: string, password: string, shopId: any}) {
+  public async Login(userInfo: { username: string, password: string, shopId: any }) {
     let { username, password, shopId } = userInfo;
     username = username.trim();
     const { data } = await login({ phone: username, password, shopId });
-    localStorage_set_token(data.authToken.accessToken);
-    setUser(data);
-    this.set_token(data.authToken.accessToken);
-    this.set_user(data);
-
-    // const { data } = await login({ phone: username, password, shopId });
+    if (!data) {
+      throw Error('获取用户信息失败');
+    }
+    // 构造用户信息
+    const user = {
+      time: +new Date(),
+      ossPath: data.ossPath + '/',
+      shopId: data.shopId,
+      ...data.authToken,
+      ...data.userVO
+    };
+    // test only
+    user.roleIdList = user.roleIdList.concat(['admin']);
+    // to 内存
+    this.SET_INFO(user);
+    // to localStorage
+    localStorage_set_user(user);
   }
 
   @Action
-  public ResetToken() {
-    localStorage_del_token();
-    this.set_token('');
-    this.set_roles([]);
+  public ClearUser() {
+    localStorage_del_user();
+    this.CLEAN_INFO();
   }
 
   @Action
-  public async GetUserRoles() {
+  public async GetUserInfo() {
+    const user = localStorage_get_user();
+    if (!user) {
+      throw Error('获取本地用户信息失败，请重新登录');
+    }
+    this.SET_INFO(user);
     if (!this.token) {
-      Message.error('用户token不存在');
       throw Error('用户token不存在');
     }
-    if (!this.user) {
-      Message.error('用户校验失败');
-      throw Error('用户校验失败');
-    }
-    let roles: any[] = [];
-    if (this.user.userVO) {
-      roles = this.user.userVO.roleIdList || [];
-    }
-    if (roles.length !== 0) {
-      this.set_roles(roles.concat(['admin']));
-    } else {
+    if (this.roles.length === 0) {
       Message.error('用户无任何权限');
       throw Error('用户无任何权限');
     }
@@ -142,10 +105,7 @@ class User extends VuexModule implements IUserState {
   @Action
   public async ChangeRoles(role: string) {
     // Dynamically modify permissions
-    const token = role + '-token';
-    this.set_token(token);
-    localStorage_set_token(token);
-    await this.GetUserRoles();
+    await this.GetUserInfo();
     resetRouter();
     // Generate dynamic accessible routes based on roles
     PermissionModule.GenerateRoutes(this.roles);
@@ -161,14 +121,50 @@ class User extends VuexModule implements IUserState {
       throw Error('LogOut: token is undefined!');
     }
     await logout();
-    localStorage_del_token();
-    removeUser();
     resetRouter();
-
     // Reset visited views and cached views
     TagsViewModule.delAllViews();
-    this.set_token('');
-    this.set_roles([]);
+    this.ClearUser();
+  }
+
+  @Mutation
+  private SET_INFO(user: any) {
+    // 用户通用字段
+    this.ossPath = user.ossPath;
+    this.token = user.accessToken || '';
+    this.imToken = user.imToken || '';
+    this.refreshToken = user.refreshToken || '';
+    this.roles = user.roleIdList || [];
+    this.name = user.userName;
+    this.avatar = this.ossPath + user.userAvatar;
+    this.id = user.id;
+    this.phone = user.phone;
+    this.sex = user.userSex === '0' ? '男' : '女';
+    this.idCard = user.idCard;
+    this.email = user.userEmail;
+    this.userState = user.userState.userState === '0' ? '停用' : '启用';
+    // 业务系统字段
+    this.shopId = user.shopId;
+  }
+
+  @Mutation
+  private CLEAN_INFO() {
+    // 用户通用字段
+    this.ossPath = '';
+    this.token = '';
+    this.imToken = '';
+    this.refreshToken = '';
+    this.roles = [];
+    this.name = '';
+    this.avatar = '';
+    this.id = null;
+    this.phone = '';
+    this.sex = '';
+    this.idCard = '';
+    this.email = '';
+    this.userState = '';
+    // 业务系统字段
+    this.shopId = null; // 当前登录的商铺
   }
 }
 

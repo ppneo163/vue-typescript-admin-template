@@ -7,13 +7,6 @@ export const getUsers = (params: any) =>
     params
   });
 
-export const getUserInfo = (data: any) =>
-  request({
-    url: '/mock/users/info',
-    method: 'post',
-    data
-  });
-
 export const getUserByName = (username: string) =>
   request({
     url: `/mock/users/${username}`,
@@ -33,13 +26,6 @@ export const deleteUser = (username: string) =>
     method: 'delete'
   });
 
-export const login = (data: any) =>
-  request({
-    url: 'shopping/v1/merchant/user/unauth/login',
-    method: 'post',
-    data
-  });
-
 export const logout = () =>
   request({
     url: '/mock/users/logout',
@@ -54,11 +40,32 @@ export const register = (data: any) =>
   });
 
 /**
+ * 登录
+ * @param data
+ */
+export const login = (data: any) =>
+  request({
+    url: 'shopping/v1/merchant/user/unauth/login',
+    method: 'post',
+    data
+  });
+
+/**
  * 获取登录店铺列表
  * @param phone
  */
 export const getShopLit = (phone: any) =>
   request({
     url: `shopping/v1/merchant/user/shop/${phone}`,
+    method: 'get'
+  });
+
+/***
+ * 获取用户信息
+ * @param id
+ */
+export const getUserInfo = (id: any) =>
+  request({
+    url: `shopping/v1/merchant/user/detail/${id}`,
     method: 'get'
   });
